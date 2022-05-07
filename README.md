@@ -1,14 +1,14 @@
 # Laravel Localization
 
-[Kembali](readme.md)
-
 ## Latar belakang topik
 
 Bahasa adalah kemampuan yang dimiliki manusia untuk berkomunikasi dengan manusia lainnya menggunakan tanda, misalnya kata dan gerakan. Perkiraan jumlah bahasa di dunia beragam antara 6.000–7.000 bahasa. Namun, perkiraan tepatnya bergantung pada suatu perubahan sembarang yang mungkin terjadi antara bahasa dan dialek. Bahasa manusia unik karena memiliki sifat-sifat produktivitas, rekursif, dan pergeseran, dan karena secara keseluruhan bahasa manusia bergantung pula pada konvensi serta edukasi sosial. Strukturnya yang kompleks mampu memberikan kemungkinan ekspresi dan penggunaan yang lebih luas daripada sistem komunikasi hewan yang diketahui.
 
+Dalam menulis website, kita akan kesusahan jika harus membuat view baru untuk setiap bahasa berbeda yang ada di website kita. Oleh karena itu, Laravel menyediakan fitur *Localization* sehingga website kita dapat mendukung berbagai bahasa tanpa perlu membuat view baru untuk setiap bahasa yang berbeda.
+
 ## Konsep-konsep
 
-Laravel menyediakan fitur lokalisasi yang memudahkan untuk mengambil string dalam berbagai bahasa, memungkinkan kita untuk dengan mudah mendukung beberapa bahasa dalam aplikasi kita.
+Laravel menyediakan fitur lokalisasi (*Localization*) yang memudahkan untuk mengambil string dalam berbagai bahasa, memungkinkan kita untuk dengan mudah mendukung beberapa bahasa dalam aplikasi kita.
 
 Laravel menyediakan dua cara untuk mengelola string terjemahan. Pertama, string bahasa dapat disimpan dalam file di dalam direktori `resources/lang`. Dalam direktori ini, terdapat subdirektori untuk setiap bahasa yang didukung oleh aplikasi. Ini adalah pendekatan yang digunakan Laravel dalam mengelola string terjemahan untuk fitur bawaan Laravel seperti validasi pesan kesalahan. Kedua, string terjemahan dapat didefinisikan dalam file JSON yang ditempatkan di dalam direktori ` resources/lang`. Saat mengambil pendekatan ini, setiap bahasa yang didukung oleh aplikasi kita akan memiliki file JSON yang sesuai di dalam direktori ini. Cara ini direkomendasikan unutk aplikasi yang berskala besar.
 
@@ -81,7 +81,7 @@ Jika placeholder kita berisi semua huruf kapital, atau hanya huruf pertama yang 
 'goodbye' => 'Goodbye, :Name', // Goodbye, Dayle
 ```
 #### Pluralisasi
-Pluralisasi adalah masalah yang kompleks, karena bahasa yang berbeda memiliki berbagai aturan kompleks untuk pluralisasi; namun, Laravel dapat membantu kita menerjemahkan string secara berbeda berdasarkan aturan pluralisasi yang kita tetapkan. Menggunakan karakter |, kita dapat membedakan bentuk tunggal dan jamak dari string.
+Pluralisasi adalah topik yang kompleks, karena bahasa yang berbeda memiliki berbagai aturan kompleks untuk pluralisasi. Namun, Laravel dapat membantu kita menerjemahkan string secara berbeda berdasarkan aturan pluralisasi yang kita tetapkan. Menggunakan karakter |, kita dapat membedakan bentuk tunggal dan jamak dari string.
 ```php
 'apples' => 'There is one apple|There are many apples',
 ```
@@ -323,50 +323,53 @@ Route::get('/form/{locale}', 'App\Http\Controllers\LocalizationController@index'
 Selanjutnya disini kita tambahkan kode pada view `formulir.blade.php` untuk menggunakan dropdown dalam pemilihan bahasa.
 ```php
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark container">
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav ml-auto">
-                    @php $locale = session()->get('locale'); @endphp
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-			   @switch($locale)
-                                @case('en')
-                                <img src="{{asset('img/en.png')}}"> English
-                                @break
-                                @case('id')
-                                <img src="{{asset('img/id.png')}}"> Indonesia
-                                @break
-                                @default
-                                <img src="{{asset('img/en.png')}}"> English
-                            @endswitch    
-                            <span class="caret"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/form/en"><img src="{{asset('img/en.png')}}"> English</a>
-                            <a class="dropdown-item" href="/form/id"><img src="{{asset('img/id.png')}}"> Indonesia</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+    <div class="collapse navbar-collapse" id="navbarToggler">
+        <ul class="navbar-nav ml-auto">
+            @php $locale = session()->get('locale'); @endphp
+            <li class="nav-item dropdown">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+       @switch($locale)
+                        @case('en')
+                        <img src="{{asset('img/en.png')}}" style="width:60px;height:40px;"> English
+                        @break
+                        @case('id')
+                        <img src="{{asset('img/id.png')}}" style="width:60px;height:40px;"> Indonesia
+                        @break
+                        @default
+                        <img src="{{asset('img/en.png')}}" style="width:60px;height:40px;"> English
+                    @endswitch    
+                    <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/form/en"><img src="{{asset('img/en.png')}}" style="width:60px;height:40px;"> English</a>
+                    <a class="dropdown-item" href="/form/id"><img src="{{asset('img/id.png')}}" style="width:60px;height:40px;"> Indonesia</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
 ```
 
 Pada kode bagian ini
 ```php
-<a class="dropdown-item" href="/form/en"><img src="{{asset('img/en.png')}}"> English</a>
-<a class="dropdown-item" href="/form/id"><img src="{{asset('img/id.png')}}"> Indonesia</a>
+<a class="dropdown-item" href="/form/en"><img src="{{asset('img/en.png')}}" style="width:60px;height:40px;"> English</a>
+<a class="dropdown-item" href="/form/id"><img src="{{asset('img/id.png')}}" style="width:60px;height:40px;"> Indonesia</a>
 ```
 dropdown tombol yang dimana jika kita memencet tombol English maka kita akan menuju /form/en dan jika kita memencet tombol Indonesia kita akan menuju /form/id, yang dimana en atau id ini akan dipassing oleh route yang telah kita buat tadi ke LocalizationController sebagai locale.
 
+Jangan lupa ditambahkan file image bendera Indonesia dan English dengan direktori masing masing `/public/img/id.png` dan `/public/img/en.png`.
 
-jalankan `http://127.0.0.1:8000/form`
+<img src="img/localization/id.png" style="width:60px;height:40px;">
+<img src="img/localization/en.png" style="width:60px;height:40px;">
+
+
+Terakhir, jalankan `http://127.0.0.1:8000/form`
 ![](img/localization/dropdown.png)
 ![](img/localization/dropdown-id.png)
 
 
 # Laravel File Storage
-
-[Kembali](readme.md)
 
 ## Latar belakang topik
 
